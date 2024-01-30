@@ -15,21 +15,16 @@ import com.mygdx.game.vue.textureCOR.TextureCOR;
  */
 public class WorldRenderer {
 
-	private World world;
 	int frameCounter = 0;
-	
-	public WorldRenderer() {
-		world = new World();
-	}
 	
 	
 	/**
 	 * Render the whole world to the screen. Is called eatch frame.
 	 *
 	 * @param batch the SpriteBatch from the Game.
-	 * @param w the current world.
+	 * @param world the current world.
 	 */
-	public void render(SpriteBatch batch, World w) {
+	public void render(SpriteBatch batch, World world) {
 		batch.begin();
 		GameElement[][] grid = world.getGrid();
 		float[] playerPosition = world.getPlayerPosition();
@@ -49,8 +44,8 @@ public class WorldRenderer {
 		}
 
 		Sprite[] joueurSprites = TextureFactory.getInstance().getJoueur();
-		Sprite joueur = joueurSprites[0 /* frameCounter % joueurSprites.length */ ];
-		joueur.setPosition(playerPosition[0] * TextureFactory.IMG_SZ, playerPosition[1] * TextureFactory.IMG_SZ);
+		Sprite joueur = joueurSprites[0 /* frameCounter % joueurSprites.length */];
+		joueur.setPosition(playerPosition[0], playerPosition[1]);
 		joueur.draw(batch);
 
 		batch.end();
