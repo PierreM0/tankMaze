@@ -63,56 +63,56 @@ public class TextureFactory {
 		return sprites ;
 	}
 
-	public Sprite[] getMur1x1() {
+	public Sprite[] getTrappe1x1() {
 		Sprite[] sprites = {
 			new Sprite(texture, IMG_SZ*2, IMG_SZ*3, IMG_SZ, IMG_SZ)
 		};
 		return sprites;
 	}
 
-	public Sprite[] getMur1x190d() {
+	public Sprite[] getTrappe1x190d() {
 		Sprite[] sprites = {
 			new Sprite(texture, IMG_SZ*4, IMG_SZ*3, IMG_SZ, IMG_SZ)
 		};
 		return sprites;
 	}
 
-	public Sprite[] getMur2x1_1() {
+	public Sprite[] getTrappe2x1_1() {
 		Sprite[] sprites = {
 			new Sprite(texture, IMG_SZ*0, IMG_SZ*3, IMG_SZ, IMG_SZ)
 		};
 		return sprites;
 	}
 
-	public Sprite[] getMur2x1_2() {
+	public Sprite[] getTrappe2x1_2() {
 		Sprite[] sprites = {
 			new Sprite(texture, IMG_SZ*1, IMG_SZ*3, IMG_SZ, IMG_SZ)
 		};
 		return sprites;
 	}
 
-	public Sprite[] getMur1x2_1() {
+	public Sprite[] getTrappe1x2_1() {
 		Sprite[] sprites = {
 			new Sprite(texture, IMG_SZ*3, IMG_SZ*3, IMG_SZ, IMG_SZ)
 		};
 		return sprites;
 	}
 
-	public Sprite[] getMur1x2_2() {
+	public Sprite[] getTrappe1x2_2() {
 		Sprite[] sprites = {
 			new Sprite(texture, IMG_SZ*5, IMG_SZ*3, IMG_SZ, IMG_SZ)
 		};
 		return sprites;
 	}
 
-	public Sprite[] getBox() {
+	public Sprite[] getMur() {
 		Sprite[] sprites = {
 			new Sprite(texture, IMG_SZ*6, IMG_SZ*3, IMG_SZ, IMG_SZ)
 		};
 		return sprites;
 	}
 
-	public Sprite[] getBox90() {
+	public Sprite[] getMur90() {
 		Sprite[] sprites = {
 			new Sprite(texture, IMG_SZ*7, IMG_SZ*3, IMG_SZ, IMG_SZ)
 		};

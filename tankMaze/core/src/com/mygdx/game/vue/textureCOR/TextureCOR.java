@@ -23,7 +23,8 @@ public abstract class TextureCOR {
 	public Sprite[] getSpriteFromGameElement(GameElement ge) {
 		Sprite[] res = getSprite1(ge);
 		if (res != null) return res;
-		else if (cor == null) return null;
+		else if (cor == null)
+			throw new RuntimeException("No sprite found");
 		else
 			return cor.getSpriteFromGameElement(ge);
 	}

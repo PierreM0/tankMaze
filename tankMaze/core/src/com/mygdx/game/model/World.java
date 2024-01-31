@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import com.mygdx.game.model.gameelement.GameElement;
 import com.mygdx.game.model.gameelement.Mur;
+import com.mygdx.game.model.gameelement.tank.TankJoueur;
 
 
 /**
@@ -12,7 +13,7 @@ import com.mygdx.game.model.gameelement.Mur;
  */
 public class World {
 	private GameElement[][] grid = {{new Mur()}};
-	private float[] playerPosition = { 0, 0};
+	private TankJoueur joueur = new TankJoueur();
 	
 
 	/**
@@ -25,25 +26,17 @@ public class World {
 		grid = json.fromJson(grid.getClass(), text);
 
 		text = Gdx.files.local("config/player_start.json").readString();
+		float[] playerPosition = {};
 		playerPosition = json.fromJson(playerPosition.getClass(), text);
+		joueur.setX(playerPosition[0]);
+		joueur.setY(playerPosition[1]);
 	}
 	
 	public GameElement[][] getGrid() {
 		return grid;
 	}
 
-	public float[] getPlayerPosition() {
-		return playerPosition;
-	}
-
-	/**
-	 * this is a setter for the player position
-	 *
-	 * @param x new x
-	 * @param y new y
-	 */
-	public void setPlayerPosition(float x, float y) {
-		playerPosition[0] = x;
-		playerPosition[1] = y;
+	public TankJoueur getJoueur() {
+		return joueur;
 	}
 }

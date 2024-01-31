@@ -1,7 +1,7 @@
 package com.mygdx.game.controller;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,7 +12,7 @@ import com.mygdx.game.vue.WorldRenderer;
 /**
  * TankMaze is the main controller class.
  */
-public class TankMaze extends Game {
+public class TankMaze extends ScreenAdapter {
 
 	private SpriteBatch batch;
 	WorldRenderer wr;
@@ -21,8 +21,7 @@ public class TankMaze extends Game {
 	World world;
 
 
-	@Override
-	public void create () {
+	public TankMaze() {
 		wr = new WorldRenderer();
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
@@ -36,32 +35,48 @@ public class TankMaze extends Game {
 	}
 
 	@Override
-	public void render () {
-		super.render();
+	public void render(float deltaTime) {
+		super.render(deltaTime);
 		fpsLogger.log();
 		batch.setProjectionMatrix(camera.combined);
-		checkInputs();
-		wr.render(batch, world);
+		checkInputs(deltaTime);
+		wr.render(batch, world, deltaTime);
 	}
 
 
 	/**
 	* À chaque frame, on regardes les inputs.
 	*/
-	private void checkInputs() {
+	private void checkInputs(float deltaTime) {
+		float modX = 0, modY = 0;
+		// go to top
+		world.getJoueur().setMoved(false);
 		if(Gdx.input.isKeyPressed(Keys.W)) {
-			// go to top
-			// world.setPlayerPosition(x, y)
+			modY += 84 * deltaTime;
+			world.getJoueur().setDirection(Direction.HAUT);
+			world.getJoueur().setMoved(true);
 		}
+		// go to left 
 		if(Gdx.input.isKeyPressed(Keys.A)) {
-			// go to left 
+			modX -= 84 * deltaTime;
+			world.getJoueur().setDirection(Direction.GAUCHE);
+			world.getJoueur().setMoved(true);
 		}
+		// go to bottom 
 		if(Gdx.input.isKeyPressed(Keys.S)) {
-			// go to bottom 
+			modY -= 84 * deltaTime;
+			world.getJoueur().setDirection(Direction.BAS);
+			world.getJoueur().setMoved(true);
 		}
+		// go to down 
 		if(Gdx.input.isKeyPressed(Keys.D)) {
-			// go to down 
+			modX += 84 * deltaTime;
+			world.getJoueur().setDirection(Direction.DROITE);
+			world.getJoueur().setMoved(true);
 		}
+
+		world.getJoueur().setX(world.getJoueur().getX() + modX);
+		world.getJoueur().setY(world.getJoueur().getY() + modY);
 	}
 
 	@Override
