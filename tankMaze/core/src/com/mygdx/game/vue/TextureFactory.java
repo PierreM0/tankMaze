@@ -3,7 +3,6 @@ package com.mygdx.game.vue;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
  * A singleton that hold the textures and process them to textureRegion.
@@ -30,7 +29,7 @@ public class TextureFactory {
 
     public TextureRegion[] getSol() {
         TextureRegion[] textureRegions = {
-                new TextureRegion(texture, 0, 0, IMG_SZ, IMG_SZ)};
+                new TextureRegion(texture, 0, 0, IMG_SZ, IM_SZ)};
         return textureRegions;
     }
 

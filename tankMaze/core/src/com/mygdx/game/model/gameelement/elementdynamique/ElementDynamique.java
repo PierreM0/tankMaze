@@ -8,6 +8,7 @@ import com.mygdx.game.model.gameelement.GameElement;
  *
  */
 public class ElementDynamique extends GameElement {
+	
 	private boolean moved = false;
 	private float x, y;
 	Direction direction = Direction.HAUT;
@@ -32,6 +33,8 @@ public class ElementDynamique extends GameElement {
 	    this.y = y;
 	}
 
+	
+	
 	public boolean moved() { return moved; } 
 	public void setMoved(boolean m) { moved = m; } 
 }
