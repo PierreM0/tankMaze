@@ -1,4 +1,4 @@
-package com.mygdx.game.model.gameelement.tank;
+package com.mygdx.game.model.gameelement.elementdynamique;
 
 import com.mygdx.game.controller.Direction;
 import com.mygdx.game.model.gameelement.GameElement;
@@ -7,7 +7,7 @@ import com.mygdx.game.model.gameelement.GameElement;
  * The tanks are the playable and non-playable character.
  *
  */
-public class Tank extends GameElement {
+public class ElementDynamique extends GameElement {
 	private boolean moved = false;
 	private float x, y;
 	Direction direction = Direction.HAUT;

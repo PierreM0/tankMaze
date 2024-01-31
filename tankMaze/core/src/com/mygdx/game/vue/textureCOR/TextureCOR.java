@@ -1,10 +1,11 @@
 package com.mygdx.game.vue.textureCOR;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.model.gameelement.GameElement;
 
 /**
- * A chain of responsability to load Sprite from instance of {@link GameElement}
+ * A chain of responsability to load TextureRegion from instance of {@link GameElement}
  *
  */
 public abstract class TextureCOR {
@@ -18,15 +19,15 @@ public abstract class TextureCOR {
 	/**
 	 * The main Function of the COR.
 	 *
-	 * @param ge The instance you search the Sprite for
+	 * @param ge The instance you search the TextureRegion for
 	 */
-	public Sprite[] getSpriteFromGameElement(GameElement ge) {
-		Sprite[] res = getSprite1(ge);
+	public TextureRegion[] getTextureRegionFromGameElement(GameElement ge) {
+		TextureRegion[] res = getTextureRegion1(ge);
 		if (res != null) return res;
 		else if (cor == null)
 			throw new RuntimeException("No sprite found");
 		else
-			return cor.getSpriteFromGameElement(ge);
+			return cor.getTextureRegionFromGameElement(ge);
 	}
 
 	/**
@@ -34,5 +35,6 @@ public abstract class TextureCOR {
 	 *
 	 * @param ge 
 	 */
-	abstract Sprite[] getSprite1(GameElement ge);
+	abstract TextureRegion[] getTextureRegion1(GameElement ge);
+
 }

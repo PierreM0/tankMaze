@@ -2,21 +2,20 @@ package com.mygdx.game.vue.textureCOR;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.model.gameelement.GameElement;
-import com.mygdx.game.model.gameelement.elementdynamique.TankJoueur;
+import com.mygdx.game.model.gameelement.elementstatique.MurFer90;
 import com.mygdx.game.vue.TextureFactory;
 
-public class PlayerTextureCOR extends TextureCOR {
+public class MurFer90TextureCOR extends TextureCOR {
 
-	public PlayerTextureCOR(TextureCOR cor) {
+	public MurFer90TextureCOR(TextureCOR cor) {
 		super(cor);
 	}
 
 	@Override
 	TextureRegion[] getTextureRegion1(GameElement ge) {
-		if (ge instanceof TankJoueur) {
-			return TextureFactory.getInstance().getJoueur();
+		if (ge instanceof MurFer90) {
+			return TextureFactory.getInstance().getMurFer90();
 		}
 		return null;
 	}
-
 }

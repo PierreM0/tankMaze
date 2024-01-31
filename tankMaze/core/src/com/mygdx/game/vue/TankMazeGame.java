@@ -1,7 +1,7 @@
-package com.mygdx.game;
+package com.mygdx.game.vue;
 
 import com.badlogic.gdx.Game;
-import com.mygdx.game.controller.TankMaze;
+import com.mygdx.game.vue.TankMaze;
 
 public class TankMazeGame extends Game {
 
