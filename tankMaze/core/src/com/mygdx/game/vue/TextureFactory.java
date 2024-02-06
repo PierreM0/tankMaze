@@ -3,6 +3,12 @@ package com.mygdx.game.vue;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mygdx.game.model.gameelement.GameElement;
+import com.mygdx.game.model.gameelement.elementdynamique.TankJoueur;
+import com.mygdx.game.model.gameelement.elementstatique.ElementVide;
+import com.mygdx.game.model.gameelement.elementstatique.MurBrique;
+import com.mygdx.game.model.gameelement.elementstatique.MurFer;
+import com.mygdx.game.model.gameelement.elementstatique.Vegetation;
 
 /**
  * A singleton that hold the textures and process them to textureRegion.
@@ -29,7 +35,7 @@ public class TextureFactory {
 
     public TextureRegion[] getSol() {
         TextureRegion[] textureRegions = {
-                new TextureRegion(texture, 0, 0, IMG_SZ, IM_SZ)};
+                new TextureRegion(texture, 0, 0, IMG_SZ, IMG_SZ)};
         return textureRegions;
     }
 
@@ -156,6 +162,21 @@ public class TextureFactory {
                 new TextureRegion(texture, IMG_SZ * 2, IMG_SZ * 2, IMG_SZ, IMG_SZ),
                 new TextureRegion(texture, IMG_SZ * 3, IMG_SZ * 2, IMG_SZ, IMG_SZ)
         };
+    }
+
+     public static TextureRegion[] getTextureFromGameElement(GameElement ge) {
+    	if (ge instanceof MurBrique) 
+    		return TextureFactory.getInstance().getMurBrique1x1();
+    	 else if (ge instanceof MurFer) 
+            return TextureFactory.getInstance().getMurFer();
+    	 else if (ge instanceof TankJoueur) 
+            return TextureFactory.getInstance().getJoueur();
+    	 else if (ge instanceof Vegetation) 
+            return TextureFactory.getInstance().getVegetation();
+    	 else if (ge instanceof ElementVide) 
+            return TextureFactory.getInstance().getSol();
+    	 else 
+            return null;
     }
 
 
