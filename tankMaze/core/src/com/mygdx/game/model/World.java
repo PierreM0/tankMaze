@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 package com.mygdx.game.model;
 
 import com.badlogic.gdx.Gdx;
@@ -38,6 +36,11 @@ public class World {
         joueur.setX(playerPosition[0]);
         joueur.setY(playerPosition[1]);
 
+        text = Gdx.files.local("config/player_speed.json").readString();
+        float playerSpeed = 0;
+        playerSpeed = json.fromJson(float.class, text);
+        joueur.setVitesse(playerSpeed);
+
         text = Gdx.files.local("config/npc_start.json").readString();
 
         float[][] npcPos = {};
@@ -58,4 +61,3 @@ public class World {
         return joueur;
     }
 }
->>>>>>> Stashed changes

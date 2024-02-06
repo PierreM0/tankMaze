@@ -4,8 +4,8 @@ import com.mygdx.game.model.gameelement.GameElement;
 
 public class ElementStatique extends GameElement {
 	public ElementStatique() {
-		setHeight(84);
-		setWidth(84);
+		setHeight(1);
+		setWidth(1);
 	}
 }
 	
