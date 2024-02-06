@@ -2,6 +2,7 @@ package com.mygdx.game.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -25,7 +26,7 @@ public class WorldRenderer {
     private float playerAnimationTimeWait = 0;
     private int playerAnimationTexture = 0;
 
-    private static float SCALER = TextureFactory.IMG_SZ; 
+    private static float SCALER = TextureFactory.IMG_SZ / 2F;
     /**
      * Render the whole world to the screen. Is called eatch frame.
      *
@@ -44,14 +45,13 @@ public class WorldRenderer {
             for (int y = 0; y < grid[0].length; ++y) {
                 TextureRegion tRegion;
                 tRegion = TextureFactory.getTextureFromGameElement(grid[x][y])[0];
-                System.out.println(grid[x][y].getWidth());
-                System.out.println(grid[x][y].getHeight());
-                batch.draw(tRegion, (y * SCALER)/2F,
-                        (grid.length - 1 - x)  * SCALER /2F,
-                        grid[x][y].getWidth()  * SCALER/ 2F,
-                        grid[x][y].getHeight() * SCALER / 2F);
+                batch.draw(tRegion, (y * SCALER),
+                        (grid.length - 1 - x)  * SCALER,
+                        grid[x][y].getWidth()  * SCALER,
+                        grid[x][y].getHeight() * SCALER);
             }
         }
+
 
         TextureRegion[] joueurTextureRegion = TextureFactory.getInstance().getJoueur();
         if (world.getJoueur().moved())
@@ -65,8 +65,8 @@ public class WorldRenderer {
         Sprite joueur = new Sprite(joueurTextureRegion[playerAnimationTexture]);
 
         joueur.setPosition(world.getJoueur().getX() * SCALER , world.getJoueur().getY() * SCALER);
-        joueur.rotate(directionToAngle(world.getJoueur().getDirection()));
         joueur.setScale(0.5F);
+        joueur.rotate(directionToAngle(world.getJoueur().getDirection()));
         joueur.draw(batch);
         batch.end();
     }

@@ -18,10 +18,44 @@ public class TextureFactory {
     static private TextureFactory instance = null;
     private Texture texture;
     private Texture textureVege;
+    private Texture textureSol;
+    private Texture textureJoueur;
+    private Texture textureNPC;
+    private Texture textureMurBrique1x1;
+    private Texture textureMurBrique1x190d;
+    private Texture textureMurBrique2x1_1;
+    private Texture textureMurBrique2x1_2;
+    private Texture textureMurBrique1x2_1;
+    private Texture textureMurBrique1x2_2;
+    private Texture textureAigle;
+    private Texture textureObus;
+    private Texture textureMiniJoueur;
+    private Texture textureMurFer;
+    private Texture textureMurFer90;
+    private Texture textureBille;
+
+    private TextureRegion toTextureRegion(Texture tex) {
+        return new TextureRegion(tex, tex.getWidth(), tex.getHeight());
+    }
 
     private TextureFactory() {
         texture = new Texture(Gdx.files.local("texture/texturemap.png"));
+        textureJoueur = new Texture(Gdx.files.local("texture/player.png"));
+        textureNPC = new Texture(Gdx.files.local("texture/npc.png"));
         textureVege = new Texture(Gdx.files.local("texture/vegetation.png"));
+        textureSol = new Texture(Gdx.files.local("texture/sol.png"));
+        textureMurBrique1x1 = new Texture(Gdx.files.local("texture/mur-brique.png"));
+        textureMurBrique1x190d = new Texture(Gdx.files.local("texture/mur-brique-90.png"));
+        textureMurBrique2x1_1 = new Texture(Gdx.files.local("texture/mur-brique-2x1-1.png"));
+        textureMurBrique2x1_2 = new Texture(Gdx.files.local("texture/mur-brique-2x1-2.png"));
+        textureMurBrique1x2_1 = new Texture(Gdx.files.local("texture/mur-brique-1x2-1.png"));
+        textureMurBrique1x2_2 = new Texture(Gdx.files.local("texture/mur-brique-1x2-2.png"));
+        textureAigle = new Texture(Gdx.files.local("texture/aigle.png"));
+        textureObus = new Texture(Gdx.files.local("texture/obus.png"));
+        textureMiniJoueur = new Texture(Gdx.files.local("texture/mini-char.png"));
+        textureMurFer = new Texture(Gdx.files.local("texture/mur-fer.png"));
+        textureMurFer90 = new Texture(Gdx.files.local("texture/mur-fer-90.png"));
+        textureBille = new Texture(Gdx.files.local("texture/bille.png"));
     }
 
     static public TextureFactory getInstance() {
@@ -33,127 +67,90 @@ public class TextureFactory {
         }
     }
 
-    public TextureRegion[] getSol() {
-        TextureRegion[] textureRegions = {
-                new TextureRegion(texture, 0, 0, IMG_SZ, IMG_SZ)};
-        return textureRegions;
+    public TextureRegion getSol() {
+        return toTextureRegion(textureSol);
     }
 
-    public TextureRegion[] getVegetation() {
-        TextureRegion[] textureRegions = {
-                new TextureRegion(textureVege, 0, 0, IMG_SZ, IMG_SZ)
-        };
-        return textureRegions;
+    public TextureRegion getVegetation() {
+        return toTextureRegion(textureVege);
     }
 
     public TextureRegion[] getJoueur() {
         TextureRegion[] textureRegions = {
-                new TextureRegion(texture, IMG_SZ * 1, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 2, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 3, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 4, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 5, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 6, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 7, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 0, IMG_SZ * 1, IMG_SZ, IMG_SZ)
+                new TextureRegion(textureJoueur, IMG_SZ * 1, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureJoueur, IMG_SZ * 2, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureJoueur, IMG_SZ * 3, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureJoueur, IMG_SZ * 4, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureJoueur, IMG_SZ * 5, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureJoueur, IMG_SZ * 6, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureJoueur, IMG_SZ * 7, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureJoueur, IMG_SZ * 0, IMG_SZ * 1, IMG_SZ, IMG_SZ)
         };
 
         return textureRegions;
     }
 
 
-    public TextureRegion[] getNPC() {
+    public TextureRegion[] getNpc() {
         TextureRegion[] textureRegions = {
-                new TextureRegion(texture, IMG_SZ * 1, IMG_SZ * 1, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 2, IMG_SZ * 1, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 3, IMG_SZ * 1, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 4, IMG_SZ * 1, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 5, IMG_SZ * 1, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 6, IMG_SZ * 1, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 7, IMG_SZ * 1, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 0, IMG_SZ * 2, IMG_SZ, IMG_SZ)
-        };
-
-        return textureRegions;
-    }
-
-    public TextureRegion[] getMurBrique1x1() {
-        TextureRegion[] textureRegions = {
-                new TextureRegion(texture, IMG_SZ * 2, IMG_SZ * 3, IMG_SZ, IMG_SZ)
+                new TextureRegion(textureNPC, IMG_SZ * 1, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureNPC, IMG_SZ * 2, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureNPC, IMG_SZ * 3, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureNPC, IMG_SZ * 4, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureNPC, IMG_SZ * 5, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureNPC, IMG_SZ * 6, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureNPC, IMG_SZ * 7, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureNPC, IMG_SZ * 0, IMG_SZ * 1, IMG_SZ, IMG_SZ)
         };
         return textureRegions;
     }
 
-    public TextureRegion[] getMurBrique1x190d() {
-        TextureRegion[] textureRegions = {
-                new TextureRegion(texture, IMG_SZ * 4, IMG_SZ * 3, IMG_SZ, IMG_SZ)
-        };
-        return textureRegions;
+    public TextureRegion getMurBrique1x1() {
+        return toTextureRegion(textureMurBrique1x1);
     }
 
-    public TextureRegion[] getMurBrique2x1_1() {
-        TextureRegion[] textureRegions = {
-                new TextureRegion(texture, IMG_SZ * 0, IMG_SZ * 3, IMG_SZ, IMG_SZ)
-        };
-        return textureRegions;
+    public TextureRegion getMurBrique1x190d() {
+        return toTextureRegion(textureMurBrique1x190d);
     }
 
-    public TextureRegion[] getMurBrique2x1_2() {
-        TextureRegion[] textureRegions = {
-                new TextureRegion(texture, IMG_SZ * 1, IMG_SZ * 3, IMG_SZ, IMG_SZ)
-        };
-        return textureRegions;
+    public TextureRegion getMurBrique2x1_1() {
+        return toTextureRegion(textureMurBrique2x1_1);
     }
 
-    public TextureRegion[] getMurBrique1x2_1() {
-        TextureRegion[] textureRegions = {
-                new TextureRegion(texture, IMG_SZ * 3, IMG_SZ * 3, IMG_SZ, IMG_SZ)
-        };
-        return textureRegions;
+    public TextureRegion getMurBrique2x1_2() {
+        return toTextureRegion(textureMurBrique2x1_2);
     }
 
-    public TextureRegion[] getMurBrique1x2_2() {
-        TextureRegion[] textureRegions = {
-                new TextureRegion(texture, IMG_SZ * 5, IMG_SZ * 3, IMG_SZ, IMG_SZ)
-        };
-        return textureRegions;
+    public TextureRegion getMurBrique1x2_1() {
+        return toTextureRegion(textureMurBrique1x2_1);
     }
 
-    public TextureRegion[] getMurFer() {
-        TextureRegion[] textureRegions = {
-                new TextureRegion(texture, IMG_SZ * 6, IMG_SZ * 3, IMG_SZ, IMG_SZ)
-        };
-        return textureRegions;
+    public TextureRegion getMurBrique1x2_2() {
+        return toTextureRegion(textureMurBrique1x2_2);
     }
 
-    public TextureRegion[] getMurFer90() {
-        return new TextureRegion[]{
-                new TextureRegion(texture, IMG_SZ * 7, IMG_SZ * 3, IMG_SZ, IMG_SZ)
-        };
+    public TextureRegion getMurFer() {
+        return toTextureRegion(textureMurFer);
     }
 
-    public TextureRegion[] getMiniJoueur() {
-        return new TextureRegion[]{
-                new TextureRegion(texture, IMG_SZ * 6, IMG_SZ * 2, IMG_SZ, IMG_SZ)
-        };
+    public TextureRegion getMurFer90() {
+        return toTextureRegion(textureMurFer90);
     }
 
-    public TextureRegion[] getAigle() {
-        return new TextureRegion[]{
-                new TextureRegion(texture, IMG_SZ * 7, IMG_SZ * 2, IMG_SZ, IMG_SZ)
-        };
+    public TextureRegion getMiniJoueur() {
+        return toTextureRegion(textureMiniJoueur);
     }
 
-    public TextureRegion[] getObus() {
-        return new TextureRegion[]{
-                new TextureRegion(texture, IMG_SZ * 5, IMG_SZ * 2, IMG_SZ, IMG_SZ)
-        };
+    public TextureRegion getAigle() {
+        return toTextureRegion(textureAigle);
     }
 
-    public TextureRegion[] getBille() {
-        return new TextureRegion[]{
-                new TextureRegion(texture, IMG_SZ * 4, IMG_SZ * 2, IMG_SZ, IMG_SZ)
-        };
+    public TextureRegion getObus() {
+        return toTextureRegion(textureObus);
+    }
+
+    public TextureRegion getBille() {
+        return toTextureRegion(textureBille);
     }
 
     public TextureRegion[] getExplosion() {
@@ -166,17 +163,17 @@ public class TextureFactory {
 
      public static TextureRegion[] getTextureFromGameElement(GameElement ge) {
     	if (ge instanceof MurBrique) 
-    		return TextureFactory.getInstance().getMurBrique1x1();
+    		return new TextureRegion[] { TextureFactory.getInstance().getMurBrique1x1() };
     	 else if (ge instanceof MurFer) 
-            return TextureFactory.getInstance().getMurFer();
+            return new TextureRegion[] { TextureFactory.getInstance().getMurFer() };
     	 else if (ge instanceof TankJoueur) 
             return TextureFactory.getInstance().getJoueur();
     	 else if (ge instanceof Vegetation) 
-            return TextureFactory.getInstance().getVegetation();
+            return new TextureRegion[] { TextureFactory.getInstance().getVegetation() };
     	 else if (ge instanceof ElementVide) 
-            return TextureFactory.getInstance().getSol();
-    	 else 
-            return null;
+            return new TextureRegion[] { TextureFactory.getInstance().getSol() };
+    	 else
+             throw new RuntimeException("Undefined texture for GameElement: " + ge);
     }
 
 
