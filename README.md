@@ -1,3 +1,3 @@
 # TODO:
 - [x] normalize coordinates
-- [ ] 1 texture file by animations
+- [x] 1 texture file by animations
