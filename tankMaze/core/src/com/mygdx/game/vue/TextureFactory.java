@@ -20,8 +20,8 @@ public class TextureFactory {
     private Texture textureVege;
 
     private TextureFactory() {
-        texture = new Texture(Gdx.files.local("texturemap.png"));
-        textureVege = new Texture(Gdx.files.local("vegetation.png"));
+        texture = new Texture(Gdx.files.local("texture/texturemap.png"));
+        textureVege = new Texture(Gdx.files.local("texture/vegetation.png"));
     }
 
     static public TextureFactory getInstance() {
