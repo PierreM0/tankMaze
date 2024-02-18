@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.model.gameelement.GameElement;
 import com.mygdx.game.model.gameelement.elementdynamique.TankJoueur;
 import com.mygdx.game.model.gameelement.elementstatique.ElementVide;
-import com.mygdx.game.model.gameelement.elementstatique.MurBrique;
-import com.mygdx.game.model.gameelement.elementstatique.MurFer;
+import com.mygdx.game.model.gameelement.elementstatique.elementdur.MurBrique;
+import com.mygdx.game.model.gameelement.elementstatique.elementdur.MurFer;
 import com.mygdx.game.model.gameelement.elementstatique.Vegetation;
 
 /**
@@ -34,6 +34,10 @@ public class TextureFactory {
     private Texture textureMurFer90;
     private Texture textureBille;
 
+    TextureRegion[] npcRegions;
+    TextureRegion[] playerRegions;
+    TextureRegion[] explosionRegion;
+
     private TextureRegion toTextureRegion(Texture tex) {
         return new TextureRegion(tex, tex.getWidth(), tex.getHeight());
     }
@@ -56,6 +60,34 @@ public class TextureFactory {
         textureMurFer = new Texture(Gdx.files.local("texture/mur-fer.png"));
         textureMurFer90 = new Texture(Gdx.files.local("texture/mur-fer-90.png"));
         textureBille = new Texture(Gdx.files.local("texture/bille.png"));
+
+        npcRegions = new TextureRegion[] {
+                new TextureRegion(textureNPC, IMG_SZ * 1, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureNPC, IMG_SZ * 2, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureNPC, IMG_SZ * 3, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureNPC, IMG_SZ * 4, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureNPC, IMG_SZ * 5, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureNPC, IMG_SZ * 6, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureNPC, IMG_SZ * 7, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                new TextureRegion(textureNPC, IMG_SZ * 0, IMG_SZ * 1, IMG_SZ, IMG_SZ)
+        };
+
+        playerRegions = new TextureRegion[] {
+            new TextureRegion(textureJoueur, IMG_SZ * 1, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                    new TextureRegion(textureJoueur, IMG_SZ * 2, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                    new TextureRegion(textureJoueur, IMG_SZ * 3, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                    new TextureRegion(textureJoueur, IMG_SZ * 4, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                    new TextureRegion(textureJoueur, IMG_SZ * 5, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                    new TextureRegion(textureJoueur, IMG_SZ * 6, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                    new TextureRegion(textureJoueur, IMG_SZ * 7, IMG_SZ * 0, IMG_SZ, IMG_SZ),
+                    new TextureRegion(textureJoueur, IMG_SZ * 0, IMG_SZ * 1, IMG_SZ, IMG_SZ)
+        };
+
+        explosionRegion = new TextureRegion[] {
+                new TextureRegion(texture, IMG_SZ * 1, IMG_SZ * 2, IMG_SZ, IMG_SZ),
+                new TextureRegion(texture, IMG_SZ * 2, IMG_SZ * 2, IMG_SZ, IMG_SZ),
+                new TextureRegion(texture, IMG_SZ * 3, IMG_SZ * 2, IMG_SZ, IMG_SZ)
+        };
     }
 
     static public TextureFactory getInstance() {
@@ -76,33 +108,12 @@ public class TextureFactory {
     }
 
     public TextureRegion[] getJoueur() {
-        TextureRegion[] textureRegions = {
-                new TextureRegion(textureJoueur, IMG_SZ * 1, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(textureJoueur, IMG_SZ * 2, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(textureJoueur, IMG_SZ * 3, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(textureJoueur, IMG_SZ * 4, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(textureJoueur, IMG_SZ * 5, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(textureJoueur, IMG_SZ * 6, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(textureJoueur, IMG_SZ * 7, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(textureJoueur, IMG_SZ * 0, IMG_SZ * 1, IMG_SZ, IMG_SZ)
-        };
-
-        return textureRegions;
+        return playerRegions;
     }
 
 
     public TextureRegion[] getNpc() {
-        TextureRegion[] textureRegions = {
-                new TextureRegion(textureNPC, IMG_SZ * 1, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(textureNPC, IMG_SZ * 2, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(textureNPC, IMG_SZ * 3, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(textureNPC, IMG_SZ * 4, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(textureNPC, IMG_SZ * 5, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(textureNPC, IMG_SZ * 6, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(textureNPC, IMG_SZ * 7, IMG_SZ * 0, IMG_SZ, IMG_SZ),
-                new TextureRegion(textureNPC, IMG_SZ * 0, IMG_SZ * 1, IMG_SZ, IMG_SZ)
-        };
-        return textureRegions;
+        return npcRegions;
     }
 
     public TextureRegion getMurBrique1x1() {
@@ -154,11 +165,7 @@ public class TextureFactory {
     }
 
     public TextureRegion[] getExplosion() {
-        return new TextureRegion[]{
-                new TextureRegion(texture, IMG_SZ * 1, IMG_SZ * 2, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 2, IMG_SZ * 2, IMG_SZ, IMG_SZ),
-                new TextureRegion(texture, IMG_SZ * 3, IMG_SZ * 2, IMG_SZ, IMG_SZ)
-        };
+        return explosionRegion;
     }
 
      public static TextureRegion[] getTextureFromGameElement(GameElement ge) {

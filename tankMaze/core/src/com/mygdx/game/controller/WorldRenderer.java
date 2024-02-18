@@ -2,17 +2,16 @@ package com.mygdx.game.controller;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.model.World;
 import com.mygdx.game.model.gameelement.*;
 import com.mygdx.game.model.gameelement.elementdynamique.TankJoueur;
-import com.mygdx.game.model.gameelement.elementstatique.ElementVide;
-import com.mygdx.game.model.gameelement.elementstatique.MurBrique;
-import com.mygdx.game.model.gameelement.elementstatique.MurFer;
-import com.mygdx.game.model.gameelement.elementstatique.Vegetation;
+import com.mygdx.game.model.gameelement.elementmouvementlineaire.Obus;
+import com.mygdx.game.model.gameelement.elementstatique.elementdur.ElementDur;
 import com.mygdx.game.vue.TankMaze;
 import com.mygdx.game.vue.TextureFactory;
 
@@ -20,9 +19,11 @@ import com.mygdx.game.vue.TextureFactory;
  * The main vue class. Get called by {@link TankMaze}.
  */
 public class WorldRenderer {
+
+    private boolean showDebug = false;
 	
     private World world = new World();
-    private static final double ANIM_HERTZ = 0.25;
+    private double ANIM_HERTZ = 0.25;
     private float playerAnimationTimeWait = 0;
     private int playerAnimationTexture = 0;
 
@@ -33,25 +34,40 @@ public class WorldRenderer {
      * @param batch the SpriteBatch from the Game.
      * @param deltaTime time elapsed from last frame.
      */
-    public void render(SpriteBatch batch, float deltaTime) {
+    public void render(SpriteBatch batch, float deltaTime, ShapeRenderer sr) {
 
+        world.deleteUnreachableObus();
+        checkPlayerInputs(deltaTime);
 
-        checkInputs(deltaTime);
 
         batch.begin();
         GameElement[][] grid = world.getGrid();
 
-        for (int x = grid.length - 1; x >= 0; --x) {
-            for (int y = 0; y < grid[0].length; ++y) {
+        for (int x = 0; x < grid.length; ++x) {
+            for (int y = 0; y < grid[x].length; ++y) {
                 TextureRegion tRegion;
                 tRegion = TextureFactory.getTextureFromGameElement(grid[x][y])[0];
-                batch.draw(tRegion, (y * SCALER),
-                        (grid.length - 1 - x)  * SCALER,
+                batch.draw(tRegion,
+                        grid[x][y].getX() * SCALER,
+                        grid[x][y].getY() * SCALER,
                         grid[x][y].getWidth()  * SCALER,
                         grid[x][y].getHeight() * SCALER);
             }
         }
 
+        TextureRegion obusTexture = TextureFactory.getInstance().getObus();
+        for (int i = 0; i < world.getObus().size(); ++i) {
+
+            Obus o = world.getObus().get(i);
+            o.move(deltaTime);
+
+            Sprite obus = new Sprite(obusTexture);
+
+            obus.rotate(o.getDirection().toAngle());
+            obus.setPosition((o.getX()-.5f) * SCALER , (o.getY()-.5f) * SCALER);
+            obus.setScale(0.5F);
+            obus.draw(batch);
+        }
 
         TextureRegion[] joueurTextureRegion = TextureFactory.getInstance().getJoueur();
         if (world.getJoueur().moved())
@@ -64,66 +80,83 @@ public class WorldRenderer {
 
         Sprite joueur = new Sprite(joueurTextureRegion[playerAnimationTexture]);
 
-        joueur.setPosition(world.getJoueur().getX() * SCALER , world.getJoueur().getY() * SCALER);
+        joueur.rotate(world.getJoueur().getDirection().toAngle());
+        joueur.setPosition((world.getJoueur().getX() -0.5F) * SCALER,
+                (world.getJoueur().getY() -0.5F) * SCALER);
         joueur.setScale(0.5F);
-        joueur.rotate(directionToAngle(world.getJoueur().getDirection()));
         joueur.draw(batch);
+
         batch.end();
+
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        if (showDebug)
+            showElementDurAndPlayerHitBox(sr);
+        sr.end();
     }
 
-
-
-    private float directionToAngle(Direction direction) {
-        switch (direction) {
-            case HAUT:
-                return 0;
-            case GAUCHE:
-                return 90;
-            case BAS:
-                return 180;
-            case DROITE:
-                return 270;
-            default:
-                throw new RuntimeException("Unreachable");
+    private void showElementDurAndPlayerHitBox(ShapeRenderer sr) {
+        for(GameElement[] ges : world.getGrid()) {
+            for (GameElement ge: ges) {
+                if (ge instanceof ElementDur) {
+                    sr.rect(ge.getHitbox().x*SCALER, ge.getHitbox().y*SCALER, ge.getHitbox().width*SCALER,
+                            ge.getHitbox().height*SCALER);
+                }
+            }
         }
+        for (Obus obus: world.getObus())  {
+            sr.rect(obus.getHitbox().x*SCALER, obus.getHitbox().y*SCALER, obus.getHitbox().width*SCALER,
+                    obus.getHitbox().height*SCALER);
+        }
+        TankJoueur joueur = world.getJoueur();
+        sr.rect(joueur.getHitbox().x*SCALER, joueur.getHitbox().y*SCALER, joueur.getHitbox().width *SCALER
+                , joueur.getHitbox().height * SCALER);
     }
 
 
     /**
      * À chaque frame, on regardes les inputs.
      */
-    private void checkInputs(float deltaTime) {
+    private void checkPlayerInputs(float deltaTime) {
+
         float modX = 0, modY = 0;
+        Direction direction = null;
+        boolean moved = false;
+
         // go to top
         TankJoueur joueur = world.getJoueur();
         joueur.setMoved(false);
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            modY += joueur.getVitesse() * deltaTime;
-            world.getJoueur().setDirection(Direction.HAUT);
-            world.getJoueur().setMoved(true);
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+            showDebug = !showDebug;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            world.spawnNewBullet(joueur.getX(), joueur.getY(), joueur.getDirection());
+        }
+        // go up
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            modY += deltaTime;
+            direction = Direction.HAUT;
+            moved = true;
         }
         // go to left
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            modX -= joueur.getVitesse() * deltaTime;
-            world.getJoueur().setDirection(Direction.GAUCHE);
-            world.getJoueur().setMoved(true);
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            modX -=  deltaTime;
+            direction = Direction.GAUCHE;
+            moved = true;
         }
         // go to bottom
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            modY -= joueur.getVitesse() * deltaTime;
-            world.getJoueur().setDirection(Direction.BAS);
-            world.getJoueur().setMoved(true);
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            modY -= deltaTime;
+            direction = Direction.BAS;
+            moved = true;
         }
-        // go to down
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            modX += joueur.getVitesse()* deltaTime;
-            world.getJoueur().setDirection(Direction.DROITE);
-            world.getJoueur().setMoved(true);
+        // go down
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            modX += deltaTime;
+            direction = Direction.DROITE;
+            moved = true;
         }
-
-        world.getJoueur().setX(world.getJoueur().getX() + modX);
-        world.getJoueur().setY(world.getJoueur().getY() + modY);
+        world.updateJoueur(modX, modY, direction, moved);
     }
-
-	
 }

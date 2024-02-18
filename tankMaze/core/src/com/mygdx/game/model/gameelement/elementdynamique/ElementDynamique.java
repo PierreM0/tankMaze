@@ -1,6 +1,7 @@
 package com.mygdx.game.model.gameelement.elementdynamique;
 
 import com.mygdx.game.controller.Direction;
+import com.mygdx.game.model.World;
 import com.mygdx.game.model.gameelement.GameElement;
 
 /**
@@ -10,7 +11,6 @@ import com.mygdx.game.model.gameelement.GameElement;
 public class ElementDynamique extends GameElement {
 	
 	private boolean moved = false;
-	private float x, y;
 	Direction direction = Direction.HAUT;
 	private float vitesse = 0;
 
@@ -29,18 +29,7 @@ public class ElementDynamique extends GameElement {
 	    this.direction = direction;
 	}
 
-	public float getX() {
-	    return x;
-	}
-	public float getY() {
-	    return y;
-	}
-	public void setX(float x) {
-	    this.x = x;
-	}
-	public void setY(float y) {
-	    this.y = y;
-	}
+
 
 	public boolean moved() { return moved; } 
 	public void setMoved(boolean m) { moved = m; } 

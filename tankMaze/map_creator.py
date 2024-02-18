@@ -2,8 +2,8 @@ import json;
 
 prefix = "com.mygdx.game.model.gameelement.elementstatique."
 element_vide = prefix+"ElementVide"
-mur_brique = prefix + "MurBrique"
-mur_fer = prefix + "MurFer"
+mur_brique = prefix + "elementdur.MurBrique"
+mur_fer = prefix + "elementdur.MurFer"
 vegetation = prefix + "Vegetation"
 
 game_map = [
