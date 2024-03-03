@@ -10,7 +10,7 @@ import com.mygdx.game.model.gameelement.GameElement;
  */
 public class ElementDynamique extends GameElement {
 	
-	private boolean moved = false;
+	private boolean moved = false, canMove = false;
 	Direction direction = Direction.HAUT;
 	private float vitesse = 0;
 
@@ -30,7 +30,14 @@ public class ElementDynamique extends GameElement {
 	}
 
 
+	public boolean canMove() {
+		return canMove;
+	}
 
-	public boolean moved() { return moved; } 
+	public void setCanMove(boolean canMove) {
+		this.canMove = canMove;
+	}
+
+	public boolean moved() { return moved; }
 	public void setMoved(boolean m) { moved = m; } 
 }
