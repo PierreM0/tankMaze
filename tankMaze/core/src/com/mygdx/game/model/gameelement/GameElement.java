@@ -40,11 +40,9 @@ public abstract class GameElement {
 		return hitbox.y;
 	}
 	public void setX(float x) {
-		if (x > 0 && x <= 19)
-			this.hitbox.x = x;
+		this.hitbox.x = x;
 	}
 	public void setY(float y) {
-		if (y > 0 && y <= 19)
-			this.hitbox.y = y;
+		this.hitbox.y = y;
 	}
 }

@@ -16,23 +16,23 @@ import com.mygdx.game.model.gameelement.elementstatique.Vegetation;
 public class TextureFactory {
     static public final int IMG_SZ = 84;
     static private TextureFactory instance = null;
-    private Texture texture;
-    private Texture textureVege;
-    private Texture textureSol;
-    private Texture textureJoueur;
-    private Texture textureNPC;
-    private Texture textureMurBrique1x1;
-    private Texture textureMurBrique1x190d;
-    private Texture textureMurBrique2x1_1;
-    private Texture textureMurBrique2x1_2;
-    private Texture textureMurBrique1x2_1;
-    private Texture textureMurBrique1x2_2;
-    private Texture textureAigle;
-    private Texture textureObus;
-    private Texture textureMiniJoueur;
-    private Texture textureMurFer;
-    private Texture textureMurFer90;
-    private Texture textureBille;
+    private final Texture textureVege;
+    private final Texture textureSol;
+    private final Texture textureJoueur;
+    private final Texture textureNPC;
+    private final Texture textureMurBrique1x1;
+    private final Texture textureMurBrique1x190d;
+    private final Texture textureMurBrique2x1_1;
+    private final Texture textureMurBrique2x1_2;
+    private final Texture textureMurBrique1x2_1;
+    private final Texture textureMurBrique1x2_2;
+    private final Texture textureAigle;
+    private final Texture textureObus;
+    private final Texture textureMiniJoueur;
+    private final Texture textureMurFer;
+    private final Texture textureMurFer90;
+    private final Texture textureBille;
+    private final Texture textureAvion;
 
     TextureRegion[] npcRegions;
     TextureRegion[] playerRegions;
@@ -43,7 +43,7 @@ public class TextureFactory {
     }
 
     private TextureFactory() {
-        texture = new Texture(Gdx.files.local("texture/texturemap.png"));
+        Texture texture = new Texture(Gdx.files.local("texture/texturemap.png"));
         textureJoueur = new Texture(Gdx.files.local("texture/player.png"));
         textureNPC = new Texture(Gdx.files.local("texture/npc.png"));
         textureVege = new Texture(Gdx.files.local("texture/vegetation.png"));
@@ -60,6 +60,7 @@ public class TextureFactory {
         textureMurFer = new Texture(Gdx.files.local("texture/mur-fer.png"));
         textureMurFer90 = new Texture(Gdx.files.local("texture/mur-fer-90.png"));
         textureBille = new Texture(Gdx.files.local("texture/bille.png"));
+        textureAvion = new Texture(Gdx.files.local("texture/soucoupe-volante-carree.png"));
 
         npcRegions = new TextureRegion[] {
                 new TextureRegion(textureNPC, IMG_SZ * 1, IMG_SZ * 0, IMG_SZ, IMG_SZ),
@@ -150,6 +151,10 @@ public class TextureFactory {
 
     public TextureRegion getMiniJoueur() {
         return toTextureRegion(textureMiniJoueur);
+    }
+
+    public TextureRegion getAvion() {
+        return toTextureRegion(textureAvion);
     }
 
     public TextureRegion getAigle() {

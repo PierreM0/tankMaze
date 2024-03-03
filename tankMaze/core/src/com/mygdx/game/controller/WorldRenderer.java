@@ -6,10 +6,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.model.World;
 import com.mygdx.game.model.gameelement.*;
+import com.mygdx.game.model.gameelement.elementdynamique.Avion;
 import com.mygdx.game.model.gameelement.elementdynamique.TankJoueur;
+import com.mygdx.game.model.gameelement.elementdynamique.TankNpc;
 import com.mygdx.game.model.gameelement.elementmouvementlineaire.Obus;
 import com.mygdx.game.model.gameelement.elementstatique.elementdur.ElementDur;
 import com.mygdx.game.vue.TankMaze;
@@ -22,12 +23,11 @@ public class WorldRenderer {
 
     private boolean showDebug = false;
 	
-    private World world = new World();
-    private double ANIM_HERTZ = 0.25;
+    private final World world = new World();
     private float playerAnimationTimeWait = 0;
     private int playerAnimationTexture = 0;
 
-    private static float SCALER = TextureFactory.IMG_SZ / 2F;
+    private static final float SCALAR = TextureFactory.IMG_SZ / 2F;
     /**
      * Render the whole world to the screen. Is called eatch frame.
      *
@@ -43,28 +43,24 @@ public class WorldRenderer {
         batch.begin();
         GameElement[][] grid = world.getGrid();
 
-        for (int x = 0; x < grid.length; ++x) {
-            for (int y = 0; y < grid[x].length; ++y) {
+        for (GameElement[] gameElements : grid) {
+            for (GameElement gameElement : gameElements) {
                 TextureRegion tRegion;
-                tRegion = TextureFactory.getTextureFromGameElement(grid[x][y])[0];
+                tRegion = TextureFactory.getTextureFromGameElement(gameElement)[0];
                 batch.draw(tRegion,
-                        grid[x][y].getX() * SCALER,
-                        grid[x][y].getY() * SCALER,
-                        grid[x][y].getWidth()  * SCALER,
-                        grid[x][y].getHeight() * SCALER);
+                        gameElement.getX() * SCALAR,
+                        gameElement.getY() * SCALAR,
+                        gameElement.getWidth() * SCALAR,
+                        gameElement.getHeight() * SCALAR);
             }
         }
 
         TextureRegion obusTexture = TextureFactory.getInstance().getObus();
-        for (int i = 0; i < world.getObus().size(); ++i) {
-
-            Obus o = world.getObus().get(i);
-            o.move(deltaTime);
-
+        for (Obus o : world.getObus())  {
             Sprite obus = new Sprite(obusTexture);
 
             obus.rotate(o.getDirection().toAngle());
-            obus.setPosition((o.getX()-.5f) * SCALER , (o.getY()-.5f) * SCALER);
+            obus.setPosition((o.getX()-.5f) * SCALAR, (o.getY()-.5f) * SCALAR);
             obus.setScale(0.5F);
             obus.draw(batch);
         }
@@ -73,18 +69,37 @@ public class WorldRenderer {
         if (world.getJoueur().moved())
             playerAnimationTimeWait += deltaTime;
 
+        double ANIM_HERTZ = 0.25;
         if (playerAnimationTimeWait > ANIM_HERTZ) {
-            playerAnimationTimeWait -= ANIM_HERTZ;
+            playerAnimationTimeWait -= (float) ANIM_HERTZ;
             playerAnimationTexture = (playerAnimationTexture + 1) % joueurTextureRegion.length;
         }
 
         Sprite joueur = new Sprite(joueurTextureRegion[playerAnimationTexture]);
 
         joueur.rotate(world.getJoueur().getDirection().toAngle());
-        joueur.setPosition((world.getJoueur().getX() -0.5F) * SCALER,
-                (world.getJoueur().getY() -0.5F) * SCALER);
+        joueur.setPosition((world.getJoueur().getX() -0.5F) * SCALAR,
+                (world.getJoueur().getY() -0.5F) * SCALAR);
         joueur.setScale(0.5F);
         joueur.draw(batch);
+
+        for (Avion a: world.getAvions()) {
+            Sprite plane = new Sprite(TextureFactory.getInstance().getAvion());
+            plane.setPosition((a.getX() - 0.5f) * SCALAR,
+                    (a.getY() - 0.5F) * SCALAR);
+            plane.setScale(0.5f);
+            plane.draw(batch);
+        }
+
+        TextureRegion[] texNpcs = TextureFactory.getInstance().getNpc();
+        for (TankNpc tankNpc: world.getNpcs()) {
+            Sprite npc = new Sprite(texNpcs[0]);
+            npc.setScale(0.5F);
+            npc.setPosition((tankNpc.getX() -0.5F) * SCALAR,
+                    (tankNpc.getY() -0.5F) * SCALAR);
+            npc.rotate(tankNpc.getDirection().toAngle());
+            npc.draw(batch);
+        }
 
         batch.end();
 
@@ -98,18 +113,27 @@ public class WorldRenderer {
         for(GameElement[] ges : world.getGrid()) {
             for (GameElement ge: ges) {
                 if (ge instanceof ElementDur) {
-                    sr.rect(ge.getHitbox().x*SCALER, ge.getHitbox().y*SCALER, ge.getHitbox().width*SCALER,
-                            ge.getHitbox().height*SCALER);
+                    sr.rect(ge.getHitbox().x* SCALAR, ge.getHitbox().y* SCALAR, ge.getHitbox().width* SCALAR,
+                            ge.getHitbox().height* SCALAR);
                 }
             }
         }
         for (Obus obus: world.getObus())  {
-            sr.rect(obus.getHitbox().x*SCALER, obus.getHitbox().y*SCALER, obus.getHitbox().width*SCALER,
-                    obus.getHitbox().height*SCALER);
+            sr.rect(obus.getHitbox().x* SCALAR, obus.getHitbox().y* SCALAR, obus.getHitbox().width* SCALAR,
+                    obus.getHitbox().height* SCALAR);
         }
         TankJoueur joueur = world.getJoueur();
-        sr.rect(joueur.getHitbox().x*SCALER, joueur.getHitbox().y*SCALER, joueur.getHitbox().width *SCALER
-                , joueur.getHitbox().height * SCALER);
+        sr.rect(joueur.getHitbox().x* SCALAR, joueur.getHitbox().y* SCALAR, joueur.getHitbox().width * SCALAR
+                , joueur.getHitbox().height * SCALAR);
+
+        for (TankNpc npc: world.getNpcs()) {
+            sr.rect(npc.getHitbox().x* SCALAR, npc.getHitbox().y* SCALAR, npc.getHitbox().width* SCALAR,
+                    npc.getHitbox().height* SCALAR);
+        }
+        for (Avion avion: world.getAvions()) {
+            sr.rect(avion.getHitbox().x* SCALAR, avion.getHitbox().y* SCALAR, avion.getHitbox().width* SCALAR,
+                    avion.getHitbox().height* SCALAR);
+        }
     }
 
 
@@ -158,5 +182,7 @@ public class WorldRenderer {
             moved = true;
         }
         world.updateJoueur(modX, modY, direction, moved);
+        world.updateObus(deltaTime);
+        world.checkNpc(deltaTime);
     }
 }
