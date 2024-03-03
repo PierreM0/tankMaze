@@ -1,0 +1,13 @@
+{
+  "npcStart": [ // posx, posy, direction [0-3], type [0-1]
+    [5,  5, 1, 1],
+    [4, 15, 0, 0]
+  ],
+  "obusMax": 3,
+  "obusSpeed": 300,
+  "plane": 1,
+  "playerWidth": 1,
+  "playerHeight": 1,
+  "playerSpeed": 4,
+  "playerPos":  [4, 4]
+}
