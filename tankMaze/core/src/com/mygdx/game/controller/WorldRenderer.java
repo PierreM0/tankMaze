@@ -1,19 +1,24 @@
 package com.mygdx.game.controller;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.model.World;
-import com.mygdx.game.model.gameelement.*;
+import com.mygdx.game.model.gameelement.GameElement;
 import com.mygdx.game.model.gameelement.elementdynamique.Avion;
 import com.mygdx.game.model.gameelement.elementdynamique.TankJoueur;
 import com.mygdx.game.model.gameelement.elementdynamique.TankNpc;
 import com.mygdx.game.model.gameelement.elementmouvementlineaire.Obus;
+import com.mygdx.game.model.gameelement.elementstatique.Explosion;
+import com.mygdx.game.model.gameelement.elementstatique.Recompenses;
 import com.mygdx.game.model.gameelement.elementstatique.elementdur.ElementDur;
 import com.mygdx.game.vue.TankMaze;
+import com.mygdx.game.vue.TankMazeEndScreen;
 import com.mygdx.game.vue.TextureFactory;
 
 /**
@@ -22,8 +27,14 @@ import com.mygdx.game.vue.TextureFactory;
 public class WorldRenderer {
 
     private boolean showDebug = false;
-	
-    private final World world = new World();
+    Game game = null;
+
+    float totalTimePlayed = 0;
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public final World world = new World();
     private float playerAnimationTimeWait = 0;
     private int playerAnimationTexture = 0;
 
@@ -34,7 +45,8 @@ public class WorldRenderer {
      * @param batch the SpriteBatch from the Game.
      * @param deltaTime time elapsed from last frame.
      */
-    public void render(SpriteBatch batch, float deltaTime, ShapeRenderer sr) {
+    public void render(SpriteBatch batch, float deltaTime, ShapeRenderer sr, BitmapFont font) {
+        totalTimePlayed += deltaTime;
 
         world.deleteUnreachableObus();
         checkPlayerInputs(deltaTime);
@@ -64,6 +76,24 @@ public class WorldRenderer {
             obus.setScale(0.5F);
             obus.draw(batch);
         }
+        for (Obus o : world.getObusNpc())  {
+            Sprite obus = new Sprite(obusTexture);
+
+            obus.rotate(o.getDirection().toAngle());
+            obus.setPosition((o.getX()-.5f) * SCALAR, (o.getY()-.5f) * SCALAR);
+            obus.setScale(0.5F);
+            obus.draw(batch);
+        }
+
+
+        for (Recompenses r : world.getRecompenses())  {
+            Sprite rec = new Sprite(TextureFactory.getInstance().getEtoile());
+
+            rec.setPosition((r.getX()-.5f) * SCALAR, (r.getY()-.5f) * SCALAR);
+            rec.setScale(0.5F);
+            rec.draw(batch);
+        }
+
 
         TextureRegion[] joueurTextureRegion = TextureFactory.getInstance().getJoueur();
         if (world.getJoueur().moved())
@@ -74,14 +104,34 @@ public class WorldRenderer {
             playerAnimationTimeWait -= (float) ANIM_HERTZ;
             playerAnimationTexture = (playerAnimationTexture + 1) % joueurTextureRegion.length;
         }
-
         Sprite joueur = new Sprite(joueurTextureRegion[playerAnimationTexture]);
+
 
         joueur.rotate(world.getJoueur().getDirection().toAngle());
         joueur.setPosition((world.getJoueur().getX() -0.5F) * SCALAR,
                 (world.getJoueur().getY() -0.5F) * SCALAR);
         joueur.setScale(0.5F);
         joueur.draw(batch);
+
+        TextureRegion[] explosionTextureRegion = TextureFactory.getInstance().getExplosion();
+        for (Explosion e: world.getExplosions()) {
+            e.waited += deltaTime;
+            if (e.waited > ANIM_HERTZ) {
+                e.waited -= (float) ANIM_HERTZ;
+                e.stage += 1;
+            }
+            Sprite explosion = new Sprite(explosionTextureRegion[e.stage % 3]);
+            explosion.setPosition(SCALAR*(e.getX()-0.5f), SCALAR*(e.getY() -0.5F));
+            explosion.setScale(0.5F);
+            explosion.draw(batch);
+        }
+
+        batch.draw(TextureFactory.getInstance().getAigle(),
+               SCALAR * world.getTrophee().getX(),
+               SCALAR * world.getTrophee().getY(),
+               SCALAR * world.getTrophee().getWidth(),
+               SCALAR * world.getTrophee().getHeight()
+                );
 
         for (Avion a: world.getAvions()) {
             Sprite plane = new Sprite(TextureFactory.getInstance().getAvion());
@@ -101,12 +151,16 @@ public class WorldRenderer {
             npc.draw(batch);
         }
 
+        font.draw(batch, "Vie Restante : "+world.getVie(), 20, 20);
+        font.draw(batch, "Recompenses restantes : "+world.getRecompenses().size(), 20, 35);
         batch.end();
 
         sr.begin(ShapeRenderer.ShapeType.Line);
         if (showDebug)
             showElementDurAndPlayerHitBox(sr);
         sr.end();
+
+
     }
 
     private void showElementDurAndPlayerHitBox(ShapeRenderer sr) {
@@ -119,6 +173,10 @@ public class WorldRenderer {
             }
         }
         for (Obus obus: world.getObus())  {
+            sr.rect(obus.getHitbox().x* SCALAR, obus.getHitbox().y* SCALAR, obus.getHitbox().width* SCALAR,
+                    obus.getHitbox().height* SCALAR);
+        }
+        for (Obus obus: world.getObusNpc())  {
             sr.rect(obus.getHitbox().x* SCALAR, obus.getHitbox().y* SCALAR, obus.getHitbox().width* SCALAR,
                     obus.getHitbox().height* SCALAR);
         }
@@ -141,6 +199,7 @@ public class WorldRenderer {
      * À chaque frame, on regardes les inputs.
      */
     private void checkPlayerInputs(float deltaTime) {
+
 
         float modX = 0, modY = 0;
         Direction direction = null;
@@ -183,6 +242,17 @@ public class WorldRenderer {
         }
         world.updateJoueur(modX, modY, direction, moved);
         world.updateObus(deltaTime);
+        world.updateExplosions();
         world.checkNpc(deltaTime);
+
+        if (world.getRecompenses().isEmpty()) {
+            if (world.getJoueur().getHitbox().overlaps(world.getTrophee().getHitbox())) {
+                game.setScreen(new TankMazeEndScreen(true, totalTimePlayed));
+            }
+        }
+
+        if (world.getVie() < 0) {
+            game.setScreen(new TankMazeEndScreen(false, 0));
+        }
     }
 }

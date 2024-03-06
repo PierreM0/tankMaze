@@ -17,6 +17,7 @@ public class TextureFactory {
     static public final int IMG_SZ = 84;
     static private TextureFactory instance = null;
     private final Texture textureVege;
+    private final Texture textureEtoile;
     private final Texture textureSol;
     private final Texture textureJoueur;
     private final Texture textureNPC;
@@ -61,6 +62,7 @@ public class TextureFactory {
         textureMurFer90 = new Texture(Gdx.files.local("texture/mur-fer-90.png"));
         textureBille = new Texture(Gdx.files.local("texture/bille.png"));
         textureAvion = new Texture(Gdx.files.local("texture/soucoupe-volante-carree.png"));
+        textureEtoile = new Texture(Gdx.files.local("texture/etoile.png"));
 
         npcRegions = new TextureRegion[] {
                 new TextureRegion(textureNPC, IMG_SZ * 1, IMG_SZ * 0, IMG_SZ, IMG_SZ),
@@ -112,6 +114,9 @@ public class TextureFactory {
         return playerRegions;
     }
 
+    public Texture getEtoile() {
+        return textureEtoile;
+    }
 
     public TextureRegion[] getNpc() {
         return npcRegions;

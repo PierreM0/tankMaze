@@ -1,37 +1,33 @@
 package com.mygdx.game.vue;
 
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.mygdx.game.controller.WorldRenderer;
 
 /**
  * TankMaze is the main controller class.
  */
-public class TankMaze extends ScreenAdapter {
+public class TankMazeEndScreen extends ScreenAdapter {
 
-    WorldRenderer wr;
-    ShapeRenderer sr;
+    SpriteBatch batch;
     FPSLogger fpsLogger = new FPSLogger();
     OrthographicCamera camera;
-
+    ShapeRenderer shapeRenderer = new ShapeRenderer();
     BitmapFont font;
-    private final SpriteBatch batch;
 
-    public void setWorldRenderer(WorldRenderer wr) {
-        this.wr = wr;
-        wr.world.configureWorld();
-    }
+    boolean win;
+    float totalTimePlayed;
 
-
-    public TankMaze() {
-        batch = new SpriteBatch();
+    public TankMazeEndScreen(boolean win, float totalTimePlayed) {
         camera = new OrthographicCamera();
         font = new BitmapFont();
-        sr = new ShapeRenderer();
+        batch = new SpriteBatch();
+        this.win = win;
+        this.totalTimePlayed = totalTimePlayed;
     }
 
     @Override
@@ -43,9 +39,20 @@ public class TankMaze extends ScreenAdapter {
     @Override
     public void render(float deltaTime) {
         super.render(deltaTime);
+        font.setColor(Color.WHITE);
         fpsLogger.log();
         batch.setProjectionMatrix(camera.combined);
-        wr.render(batch, deltaTime, sr, font);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.rect(0, 0, 1000, 1000);
+        shapeRenderer.end();
+        batch.begin();
+        if (!win)
+            font.draw(batch, "Pour recommencer, veuillez relancer le jeu", 100, 100);
+        else {
+            font.draw(batch, "Bravos, vous avez mis " + totalTimePlayed + "seconde pour terminer.", 100, 100);
+        }
+        batch.end();
     }
 
 

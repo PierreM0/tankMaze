@@ -1,5 +1,5 @@
 {
-  "npcStart": [ // posx, posy, direction [0-3], type [0-1]
+  "npcStart": [
     [5,  5, 1, 1],
     [4, 15, 0, 0]
   ],
@@ -9,5 +9,15 @@
   "playerWidth": 1,
   "playerHeight": 1,
   "playerSpeed": 4,
-  "playerPos":  [4, 4]
+  "playerPos":  [4, 4],
+  "vie": 9,
+  "recompenses": 5,
+  "coordRecompenses": [
+    [5, 5],
+    [7, 8],
+    [13, 2],
+    [2, 13],
+    [18, 15]
+  ],
+  "trophee": [4, 4]
 }
